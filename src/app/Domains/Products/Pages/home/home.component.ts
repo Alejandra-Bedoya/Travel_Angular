@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { TouristPackages } from '../../../shared/models/touristPackages.model';
 import { TouristPackageService } from './../../../shared/services/touristPackages.service';
 import { Component, inject, OnInit } from '@angular/core';
@@ -5,11 +6,11 @@ import { Component, inject, OnInit } from '@angular/core';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export default class HomeComponent implements OnInit {
+export default class HomeComponent implements OnInit{
 
 
   private touristPackageService = inject (TouristPackageService)
@@ -19,15 +20,30 @@ export default class HomeComponent implements OnInit {
   getAllPackages(){
     this.touristPackageService.getAllPackages().subscribe(touristPackages => {
       this.touristPackages = touristPackages;
-    });
-  }
-
-  ngOnInit(this.):  {
-    
+    }); 
   }
 
 
+  ngOnInit(): void {
+    this.getAllPackages();
+  }
+ 
 
+ 
+  
+ 
+
+
+
+
+
+
+
+
+
+
+
+  
 
 
 

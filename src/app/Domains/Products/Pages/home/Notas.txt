@@ -1,0 +1,174 @@
+
+<div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="https://media.istockphoto.com/id/1465916031/es/foto/el-camino-al-avi%C3%B3n.jpg?s=1024x1024&w=is&k=20&c=uclF5DWKThLqqDlcR6UeOCPY3ERjCB_EtKgUBFusGJo=" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="https://cdn-3.expansion.mx/dims4/default/f30cbeb/2147483647/strip/true/crop/6553x4244+0+0/resize/1200x777!/format/webp/quality/60/?url=https%3A%2F%2Fcdn-3.expansion.mx%2F3f%2F58%2Fe40c85894fb291192144ea18ca63%2Faeromexico-viajes.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="https://wp.growproexperience.com/wp-content/uploads/2022/04/Viajes-de-aventura-2.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+    </div>
+    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+    </div>
+    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+            </svg>
+            <span class="sr-only">Previous</span>
+        </span>
+    </button>
+    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="sr-only">Next</span>
+        </span>
+    </button>
+  </div>
+
+______________________________________________________________________________________
+
+
+import { CommonModule } from '@angular/common';
+import { TouristPackages } from '../../../shared/models/touristPackages.model';
+import { TouristPackageService } from './../../../shared/services/touristPackages.service';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
+})
+export default class HomeComponent implements OnInit, OnDestroy {
+
+
+  private touristPackageService = inject (TouristPackageService)
+
+  touristPackages: TouristPackages [] = []
+
+  getAllPackages(){
+    this.touristPackageService.getAllPackages().subscribe(touristPackages => {
+      this.touristPackages = touristPackages;
+    }); 
+  }
+
+  
+
+
+  private carousel: HTMLElement | null = null;
+  private items: NodeListOf<HTMLElement> | null = null;
+  private buttons: NodeListOf<HTMLButtonElement> | null = null;
+  private prevButton: HTMLButtonElement | null = null;
+  private nextButton: HTMLButtonElement | null = null;
+  private currentIndex: number = 0;
+  private intervalId: any = null;
+ 
+  ngOnInit(): void {
+    this.carousel = document.querySelector('#default-carousel');
+    if (this.carousel) {
+      this.items = this.carousel.querySelectorAll('[data-carousel-item]') as NodeListOf<HTMLElement>;
+      this.buttons = this.carousel.querySelectorAll('[data-carousel-slide-to]') as NodeListOf<HTMLButtonElement>;
+      this.prevButton = this.carousel.querySelector('[data-carousel-prev]') as HTMLButtonElement;
+      this.nextButton = this.carousel.querySelector('[data-carousel-next]') as HTMLButtonElement;
+ 
+      if (this.prevButton && this.nextButton) {
+        this.prevButton.addEventListener('click', this.showPrevItem);
+        this.nextButton.addEventListener('click', this.showNextItem);
+      }
+ 
+      if (this.buttons) {
+        this.buttons.forEach((button, i) => {
+          button.addEventListener('click', () => this.showItem(i));
+        });
+      }
+ 
+      this.showItem(this.currentIndex);
+      this.startAutoSlide();
+    }
+    this.getAllPackages();
+
+  }
+ 
+  ngOnDestroy(): void {
+    if (this.prevButton && this.nextButton) {
+      this.prevButton.removeEventListener('click', this.showPrevItem);
+      this.nextButton.removeEventListener('click', this.showNextItem);
+    }
+ 
+    if (this.buttons) {
+      this.buttons.forEach((button, i) => {
+        button.removeEventListener('click', () => this.showItem(i));
+      });
+    }
+ 
+    this.stopAutoSlide();
+  }
+ 
+  private showItem(index: number): void {
+    if (this.items && this.buttons) {
+      this.items.forEach((item, i) => {
+        item.classList.toggle('hidden', i !== index);
+        item.classList.toggle('active', i === index);
+      });
+      this.buttons.forEach((button, i) => {
+        button.setAttribute('aria-current', (i === index).toString());
+      });
+      this.currentIndex = index;
+    }
+  }
+ 
+  private showNextItem = (): void => {
+    if (this.items) {
+      this.showItem((this.currentIndex + 1) % this.items.length);
+    }
+  }
+ 
+  private showPrevItem = (): void => {
+    if (this.items) {
+      this.showItem((this.currentIndex - 1 + this.items.length) % this.items.length);
+    }
+  }
+ 
+  private startAutoSlide(): void {
+    this.intervalId = setInterval(this.showNextItem, 5000); // 5000 ms = 5 seconds
+  }
+ 
+  private stopAutoSlide(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+

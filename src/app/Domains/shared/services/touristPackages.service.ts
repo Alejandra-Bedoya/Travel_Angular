@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient,  } from '@angular/common/http';
 import { TouristPackages } from '../models/touristPackages.model'
 
 @Injectable({
@@ -8,10 +7,11 @@ import { TouristPackages } from '../models/touristPackages.model'
 
 })
 export class TouristPackageService {
-  constructor(private http: HttpClient) {}
   
+  private http =  inject(HttpClient)
   private apiUrl = 'http://localhost:8080/touristPackage';  // URL del endpoint de tu API
  
+  constructor(){}
 
   getAllPackages() {
     const url = new URL(`${this.apiUrl}/getAll`)
