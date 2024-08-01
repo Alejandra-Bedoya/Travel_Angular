@@ -1,17 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { TouristPackageService } from '../../shared/services/touristPackages.service';
-import { TouristPackages } from '../../shared/models/touristPackages.model';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { TouristPackageService } from '../../../shared/services/touristPackages.service';
+import { TouristPackages } from '../../../shared/models/touristPackages.model';
 
 @Component({
-  selector: 'app-paquetes',
+  selector: 'app-detalles',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './paquetes.component.html',
-  styleUrl: './paquetes.component.css'
+  templateUrl: './detalles.component.html',
+  styleUrl: './detalles.component.css'
 })
-export default class PaquetesComponent implements OnInit {
-
+export default class DetallesComponent {
+  
   private touristPackageService = inject(TouristPackageService);
 
   touristPackages: TouristPackages[] = [];
@@ -25,6 +25,4 @@ export default class PaquetesComponent implements OnInit {
   ngOnInit(): void {
     this.getAllPackages();
 }
-
-
 }

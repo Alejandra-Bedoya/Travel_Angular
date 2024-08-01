@@ -8,4 +8,5 @@ export interface TouristPackages {
     durationDays:       number;
     packagePrice:       number;
     availableSpots:     number;
+    image:              String;
 }

@@ -9,7 +9,7 @@ import { TouristPackages } from '../models/touristPackages.model'
 export class TouristPackageService {
   
   private http =  inject(HttpClient)
-  private apiUrl = 'http://localhost:8080/touristPackage';  // URL del endpoint de tu API
+  private apiUrl = 'http://localhost:8080/touristPackage';  
  
   constructor(){}
 

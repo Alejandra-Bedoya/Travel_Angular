@@ -34,7 +34,11 @@ export const routes: Routes = [
             {  
                 path: 'contactenos',
                 loadComponent: () => import('./domains/products/pages/contactenos/contactenos.component')
-            },
+            }, 
+            {  
+                path: 'detalles',
+                loadComponent: () => import('./domains/servicios/paquetes/detalles/detalles.component')
+            }, 
             {
                 path: '',
                 redirectTo: 'home',   
